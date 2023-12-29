@@ -1,0 +1,6 @@
+@DailyRhythms_HostAddress = http://localhost:5253
+
+GET {{DailyRhythms_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
