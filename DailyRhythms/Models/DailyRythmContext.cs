@@ -3,7 +3,7 @@ using System;
 
 namespace DailyRhythms.Models
 {
-	public class DailyRythmsContext : DbContext
+	public class DailyRhythmsContext : DbContext
 	{
 		public DbSet<User> Users { get; set; }
 		public DbSet<Category> Categories { get; set; }
@@ -11,7 +11,7 @@ namespace DailyRhythms.Models
 		public DbSet<DailyLog> DailyLogs { get; set; }
 		public DbSet<DailyLogToDoItem> DailyLogToDoItems { get; set; }
 
-		public DailyRythmsContext(DbContextOptions<DailyRythmsContext> options) : base(options) { }
+		public DailyRhythmsContext(DbContextOptions<DailyRhythmsContext> options) : base(options) { }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -19,8 +19,28 @@ namespace DailyRhythms.Models
 
 			// Configure the composite key for DailyLogTask
 			modelBuilder.Entity<DailyLogToDoItem>()
-				.HasKey(dlt => new { dlt.DailyLogId, dlt.ToDoItemId });
+	       .HasKey(dlt => new { dlt.DailyLogId, dlt.ToDoItemId });
 
+            foreach (var fk in modelBuilder.Model.GetEntityTypes()
+				.Where(e => e.Name== "DailyLogToDoItem")
+				.SelectMany(e => e.GetForeignKeys()))
+            {
+                fk.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+            modelBuilder.Entity<DailyLogToDoItem>()
+				.HasOne(dlt => dlt.DailyLog)
+				.WithMany(dl => dl.DailyLogToDoItems)
+				.HasForeignKey(dlt => dlt.DailyLogId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<DailyLogToDoItem>()
+				.HasOne(dlt => dlt.ToDoItem)
+				.WithMany(ti => ti.DailyLogToDoItems)
+				.HasForeignKey(dlt => dlt.ToDoItemId)
+			    .OnDelete(DeleteBehavior.Restrict);
+
+		
 			// If you want to use the enum as the primary key for Category
 			modelBuilder.Entity<Category>()
 				.Property(c => c.Id)
@@ -33,6 +53,7 @@ namespace DailyRhythms.Models
 	  );
 
 			// Other configurations...
+
 		}
 	}
 }

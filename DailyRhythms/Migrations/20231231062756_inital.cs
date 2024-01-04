@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace DailyRhythms.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialModels : Migration
+    public partial class inital : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +18,9 @@ namespace DailyRhythms.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,14 +31,39 @@ namespace DailyRhythms.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TimeZoneId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DailyLogs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateOnly>(type: "date", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DailyLogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DailyLogs_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -44,7 +73,11 @@ namespace DailyRhythms.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,25 +88,11 @@ namespace DailyRhythms.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DailyLogs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DailyLogs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DailyLogs_Users_UserId",
+                        name: "FK_ToDoItems_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "UserId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -93,13 +112,24 @@ namespace DailyRhythms.Migrations
                         column: x => x.DailyLogId,
                         principalTable: "DailyLogs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DailyLogToDoItems_ToDoItems_ToDoItemId",
                         column: x => x.ToDoItemId,
                         principalTable: "ToDoItems",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "CreatedAt", "Name", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1263), "Morning", new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1266) },
+                    { 2, new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1269), "Afternoon", new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1270) },
+                    { 3, new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1271), "Evening", new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1271) },
+                    { 4, new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1272), "Anytime", new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1272) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -116,6 +146,11 @@ namespace DailyRhythms.Migrations
                 name: "IX_ToDoItems_CategoryId",
                 table: "ToDoItems",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ToDoItems_UserId",
+                table: "ToDoItems",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -131,10 +166,10 @@ namespace DailyRhythms.Migrations
                 name: "ToDoItems");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Categories");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                name: "Users");
         }
     }
 }

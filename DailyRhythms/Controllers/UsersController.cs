@@ -9,9 +9,9 @@ namespace DailyRhythms.Controllers
 
 	public class UsersController : ControllerBase
 	{
-		private readonly DailyRythmsContext _context;
+		private readonly DailyRhythmsContext _context;
 
-		public UsersController(DailyRythmsContext context)
+		public UsersController(DailyRhythmsContext context)
 		{
 			_context = context;
 		}
@@ -29,7 +29,7 @@ namespace DailyRhythms.Controllers
 			_context.Users.Add(user);
 			await _context.SaveChangesAsync();
 
-			return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+			return CreatedAtAction("GetUser", new { id = user.Id }, user);
 		}
 
 		[HttpGet("{id}",Name ="GetUser")]
@@ -44,7 +44,7 @@ namespace DailyRhythms.Controllers
 
 			UserResponseDto userResponseDto= new UserResponseDto
 			{
-				UserId = user.UserId,
+				UserId = user.Id,
 				FirstName = user.FirstName,
 				LastName = user.LastName
 			};

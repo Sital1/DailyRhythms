@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DailyRhythms.Migrations
 {
-    [DbContext(typeof(DailyRythmsContext))]
-    [Migration("20231229061312_InitialModels")]
-    partial class InitialModels
+    [DbContext(typeof(DailyRhythmsContext))]
+    [Migration("20231231062756_inital")]
+    partial class inital
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,13 +30,49 @@ namespace DailyRhythms.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1263),
+                            Name = "Morning",
+                            UpdatedAt = new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1266)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1269),
+                            Name = "Afternoon",
+                            UpdatedAt = new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1270)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1271),
+                            Name = "Evening",
+                            UpdatedAt = new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1271)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1272),
+                            Name = "Anytime",
+                            UpdatedAt = new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1272)
+                        });
                 });
 
             modelBuilder.Entity("DailyRhythms.Models.DailyLog", b =>
@@ -47,7 +83,13 @@ namespace DailyRhythms.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateOnly>("Date")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
@@ -89,24 +131,41 @@ namespace DailyRhythms.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ToDoItems");
                 });
 
             modelBuilder.Entity("DailyRhythms.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -116,7 +175,14 @@ namespace DailyRhythms.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId");
+                    b.Property<string>("TimeZoneId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
@@ -137,13 +203,13 @@ namespace DailyRhythms.Migrations
                     b.HasOne("DailyRhythms.Models.DailyLog", "DailyLog")
                         .WithMany("DailyLogToDoItems")
                         .HasForeignKey("DailyLogId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DailyRhythms.Models.ToDoItem", "ToDoItem")
-                        .WithMany("DailyLogTasks")
+                        .WithMany("DailyLogToDoItems")
                         .HasForeignKey("ToDoItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DailyLog");
@@ -159,7 +225,15 @@ namespace DailyRhythms.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DailyRhythms.Models.User", "User")
+                        .WithMany("ToDoItems")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DailyRhythms.Models.Category", b =>
@@ -174,12 +248,14 @@ namespace DailyRhythms.Migrations
 
             modelBuilder.Entity("DailyRhythms.Models.ToDoItem", b =>
                 {
-                    b.Navigation("DailyLogTasks");
+                    b.Navigation("DailyLogToDoItems");
                 });
 
             modelBuilder.Entity("DailyRhythms.Models.User", b =>
                 {
                     b.Navigation("DailyLogs");
+
+                    b.Navigation("ToDoItems");
                 });
 #pragma warning restore 612, 618
         }

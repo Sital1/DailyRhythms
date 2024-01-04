@@ -1,0 +1,31 @@
+<div *ngIf="canStartDay" class="d-flex justify-content-center">
+  <!-- Add disabled logic later-->
+  <button class="btn btn-primary" (click)="onStartDayClick()">Start Day</button>
+</div>
+
+<div *ngIf="dailyLog" class="container ms-5 mt-5">
+  <h3>{{ dailyLog.date }}</h3>
+  <tabset type="pills d-flex justify-content-start">
+    <tab heading="Morning">
+      <div *ngFor="let item of dailyLog.morning.toDoItems">
+        <app-todoitems [dailyLogId]="dailyLog.id" [item]="item"></app-todoitems>
+      </div>
+    </tab>
+
+    <tab heading="Afternoon">
+      <div *ngFor="let item of dailyLog.afternoon.toDoItems">
+        <app-todoitems [dailyLogId]="dailyLog.id" [item]="item"></app-todoitems>
+      </div>
+    </tab>
+    <tab heading="Evening">
+      <div *ngFor="let item of dailyLog.evening.toDoItems">
+        <app-todoitems [dailyLogId]="dailyLog.id" [item]="item"></app-todoitems>
+      </div>
+    </tab>
+    <tab heading="AnyTime">
+      <div *ngFor="let item of dailyLog.anytime.toDoItems">
+        <app-todoitems [dailyLogId]="dailyLog.id" [item]="item"></app-todoitems>
+      </div>
+    </tab>
+  </tabset>
+</div>

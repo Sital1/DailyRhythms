@@ -1,7 +1,8 @@
 ﻿namespace DailyRhythms.Models
 {
-	public class DailyLogToDoItem
+	public class DailyLogToDoItem 
 	{
+		// Composite Key parts
 		public int DailyLogId { get; set; }
 		public int ToDoItemId { get; set; }
 
@@ -11,4 +12,5 @@
 
 		public bool Completed { get; set; }
 	}
+
 }

@@ -1,15 +1,14 @@
 ﻿namespace DailyRhythms.Models
 {
-	public class DailyLog
+	public class DailyLog : BaseEntity
 	{
-		public int Id { get; set; }
-		public DateTime Date { get; set; }
+		// Inherits 'Id', 'CreatedAt', and 'UpdatedAt' from BaseEntity
+		public DateOnly Date { get; set; } = DateOnly.FromDateTime(DateTime.UtcNow);
 
-		// Foreign key for User
+		// Foreign keys and Navigation properties
 		public int UserId { get; set; }
 		public User User { get; set; }
-
-		// Navigation property for DailyLogTasks
 		public ICollection<DailyLogToDoItem> DailyLogToDoItems { get; set; }
 	}
+
 }

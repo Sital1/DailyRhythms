@@ -1,15 +1,17 @@
 ﻿namespace DailyRhythms.Models
 {
-	public class ToDoItem
+	public class ToDoItem : BaseEntity
 	{
-		public int Id { get; set; }
+		// Inherits 'Id', 'CreatedAt', and 'UpdatedAt' from BaseEntity
 		public string Title { get; set; }
+		public DateTime? DeletedAt { get; set; } = null;
 
-		// Foreign key for Category
+		// Foreign keys and Navigation properties
 		public CategoryType CategoryId { get; set; }
 		public Category Category { get; set; }
-
-		// Navigation property for DailyLogTasks
-		public ICollection<DailyLogToDoItem> DailyLogTasks { get; set; }
+		public int UserId { get; set; }
+		public User User { get; set; }
+		public ICollection<DailyLogToDoItem> DailyLogToDoItems { get; set; }
 	}
+
 }
