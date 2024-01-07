@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ToDoItem } from 'src/interfaces/dailylog';
+import { ToDoItem } from 'src/app/interfaces/dailylog';
 import { DailyLogService } from '../services/daily-log.service';
 
 @Component({
@@ -11,6 +11,7 @@ export class TodoitemsComponent {
 
   @Input() dailyLogId? : number
   @Input() item? : ToDoItem;
+  @Input() passedDateIsToday?: boolean;
   constructor(private dailyLogService: DailyLogService) {}
 
   submitChange(id:number){

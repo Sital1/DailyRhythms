@@ -1,55 +1,72 @@
 ﻿using DailyRhythms.Models;
 using DailyRhythms.Models.Dtos;
+using DailyRhythms.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace DailyRhythms.Controllers
 {
 	[Route("api/[controller]")]
+	[ApiController]
 
 	public class UsersController : ControllerBase
 	{
 		private readonly DailyRhythmsContext _context;
+		private readonly IAuthService _authService;
 
-		public UsersController(DailyRhythmsContext context)
+		public UsersController(DailyRhythmsContext context, IAuthService authService)
 		{
 			_context = context;
+			_authService = authService;
 		}
 
-		[HttpPost]
-		// write a method for creating a user using SignUpDto
-		public async Task<ActionResult<User>> CreateUser([FromBody]SignUpDto signUpDto)
+		[HttpPost("login")]
+		public async Task<ActionResult<UserDto>> Login([FromBody]LoginDto loginDto)
 		{
-			var user = new User
+			UserDto loggedInUser = await _authService.Login(loginDto.Email, loginDto.Password);
+
+			if (loggedInUser != null)
 			{
-				FirstName = signUpDto.FirstName,
-				LastName = signUpDto.LastName
-			};
-
-			_context.Users.Add(user);
-			await _context.SaveChangesAsync();
-
-			return CreatedAtAction("GetUser", new { id = user.Id }, user);
+				return Ok(loggedInUser);
+			}
+			return BadRequest(new { message = "User login unsuccessful" });
 		}
 
-		[HttpGet("{id}",Name ="GetUser")]
-		public async Task<ActionResult<User>> GetUser(int id)
-		{
-			var user = await _context.Users.FindAsync(id);
 
-			if (user == null)
+		[HttpGet("emailexists")]
+		public async Task<ActionResult<bool>> CheckEmailExistsAsync([FromQuery] string email)
+		{
+			return await _context.Users.FirstOrDefaultAsync(u => u.Email == email) != null;
+		}
+
+
+		[HttpPost("register")]
+		public async Task<ActionResult<UserDto>> Register(SignUpDto registerDto)
+		{
+			if (CheckEmailExistsAsync(registerDto.Email).Result.Value)
 			{
-				return NotFound();
+				return new BadRequestObjectResult("Email address is in use");
 			}
 
-			UserResponseDto userResponseDto= new UserResponseDto
-			{
-				UserId = user.Id,
-				FirstName = user.FirstName,
-				LastName = user.LastName
-			};
+			var user = await _authService.Register(registerDto);
 
-			return user;
+			if (user == null) return BadRequest(new { message = "User login unsuccessful" });
+
+			return Ok(user);
+		}
+
+
+		[Authorize(AuthenticationSchemes = "Bearer")]
+		[HttpGet]
+		public async Task<ActionResult<UserDto>> GetCurrentUser()
+		{	
+			var email = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+			UserDto userDto = await _authService.GetCurrentUser(email);
+			return Ok(userDto);
 		}
 
 	}

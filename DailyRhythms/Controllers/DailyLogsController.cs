@@ -1,12 +1,15 @@
 ﻿using DailyRhythms.Extensions;
 using DailyRhythms.Models;
 using DailyRhythms.Models.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DailyRhythms.Controllers
 {
 	[Route("api/[controller]")]
+	[ApiController]
+	[Authorize]
 	public class DailyLogsController : ControllerBase
 	{
 		private readonly DailyRhythmsContext _context;
@@ -39,7 +42,7 @@ namespace DailyRhythms.Controllers
 
 
 		[HttpPost()]
-		public async Task<ActionResult> StartDay([FromBody] UserIdDto userIdDto)
+		public async Task<ActionResult> StartDay([FromBody] UserDto userIdDto)
 		{
 			int userId = userIdDto.UserId;
 			// check the existence of user

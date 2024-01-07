@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment.development';
 import { Observable } from 'rxjs';
-import { DailyLog, DailyLogToDoItemDto, ToDoItem } from 'src/interfaces/dailylog';
+import { DailyLog, DailyLogToDoItemDto, ToDoItem } from 'src/app/interfaces/dailylog';
 
 @Injectable({
   providedIn: 'root'

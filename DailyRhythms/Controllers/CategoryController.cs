@@ -1,5 +1,6 @@
 ﻿using DailyRhythms.Models;
 using DailyRhythms.Models.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -7,6 +8,8 @@ using System.Linq.Expressions;
 namespace DailyRhythms.Controllers
 {
 	[Route("api/[controller]/todoitem")]
+	[ApiController]
+	[Authorize]
 	public class CategoryController : ControllerBase
 	{
 		private DailyRhythmsContext _context;

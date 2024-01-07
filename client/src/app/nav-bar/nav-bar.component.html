@@ -1,0 +1,40 @@
+<header
+  class="d-flex flex-md-row align-items-center justify-content-between p-3 px-4 mb-3 navbar navbar-expand-lg bg-dark text-white border-bottom fixed-top shadow-sm">
+  <h3>Daily Rhythms</h3>
+  <nav class="my-2 text-uppercase fs-4 ">
+    <a class="p-2 text-white" routerLink="/viewlogs" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">View Logs</a>
+    
+  </nav>
+  <div class="d-flex align-items-center ">
+    <ng-container *ngIf="(accountService.currentUser$|async)===null">
+      <a routerLink="/login" class="btn btn-outline-secondary me-2 text-white">Login</a>
+      <a routerLink="/register" class="btn btn-outline-secondary me-2 text-white">Signup</a>
+    </ng-container>
+
+    <ng-container *ngIf="accountService.currentUser$|async as user">
+      <div class="dropdown ms-3 me-5" style="cursor: pointer;" dropdown>
+       <a dropdownToggle class="dropdown-toggle text-white">
+         <strong>Welcome {{user.displayName}}</strong>
+       </a>
+       <ul *dropdownMenu class="dropdown-menu dropdown-menu-right">
+         <li class="py-1">
+           <a routerLink="/viewlogs" class="dropdown-item">
+             <i class="fa fa-calendar me-3"></i> View Logs
+           </a>
+         </li>
+         <li class="py-1">
+           <a routerLink="/orders" class="dropdown-item">
+             <i class="fa fa-solid fa-check me-3"></i> View ToDoItems
+           </a>
+         </li>
+         <div class="dropdows-divider"></div>
+         <li class="py-1">
+           <a (click)="accountService.logout()" class="dropdown-item">
+             <i class="fa fa-sign-out me-3"></i> Logout
+           </a>
+         </li>
+       </ul>
+      </div>
+     </ng-container>
+  </div>
+</header>

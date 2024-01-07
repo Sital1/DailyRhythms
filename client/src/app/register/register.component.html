@@ -1,0 +1,37 @@
+<div class="d-flex justify-content-center mt-5">
+    <div class="col-lg-3 col-sm-6 col-md-5">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="text-center mb-4">
+          <h1 class="mb-3">Sign up</h1>
+        </div>
+        
+        <app-text-input [formControl]="registerForm.controls['displayName']" [label]="'Display Name'"></app-text-input>
+        <app-text-input [formControl]="registerForm.controls['email']" [label]="'Email Address'"></app-text-input>
+        <app-text-input [formControl]="registerForm.controls['password']" [label]="'Password'" [type]="'password'"></app-text-input>
+        
+        <div class="form-floating">
+          <select 
+          [ngClass]="(registerForm.controls['timeZoneId'].touched) ? registerForm.controls['timeZoneId'].invalid ? 'is-invalid' : 'is-valid' : null"
+          class="form-select" id="floatingSelect" [formControl]="registerForm.controls['timeZoneId']" aria-label="Time Zone">
+            <option *ngFor="let timezone of timezones" [value]="timezone">{{ timezone }}</option>
+          </select>
+          <label for="floatingSelect">Time Zone</label>
+          <div *ngIf="registerForm.controls['timeZoneId'].errors?.['required']" class="invalid-feedback">Please select timezone</div>
+        </div>
+
+        <!-- <select [formControl]="registerForm.controls['timeZoneId']" class="form-control">
+
+        </select> -->
+        <ul class="text-danger list-unstyled" *ngIf="errors">
+          <li *ngFor="let error of errors">
+            {{error}}
+          </li>
+        </ul>
+
+        <div class="d-grid">
+          <button [disabled]="registerForm.invalid" class="btn btn-lg btn-primary mt-3" type="submit">Sign up</button>
+        </div>
+      </form>
+    </div>
+  
+  </div>

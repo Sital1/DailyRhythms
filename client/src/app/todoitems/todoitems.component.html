@@ -1,9 +1,6 @@
-<div *ngIf="item" class="todo-item row mt-2">
-    <div class="col-11 d-flex">
-        <input type="checkbox" (change)="submitChange(item.id)" [checked]="item.isCompleted">
+<div *ngIf="item" class="todo-item d-flex  mt-2">
+    <div class="d-flex justify-content-center">
+        <input [disabled]="!passedDateIsToday" type="checkbox" (change)="submitChange(item.id)" [checked]="item.isCompleted">
         <div class="todo-item-label ms-4">{{item.title}}</div>
-    </div>
-    <div class="col-1">
-        &times;
     </div>
 </div>

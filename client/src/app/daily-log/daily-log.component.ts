@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DailyLog } from 'src/interfaces/dailylog';
+import { DailyLog } from 'src/app/interfaces/dailylog';
 import { DailyLogService } from '../services/daily-log.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class DailyLogComponent implements OnInit {
   date?: string | null
   dailyLog: DailyLog | null = null
   canStartDay: boolean = false;
+  passedDateIsToday:boolean=false;
 
   constructor(private activatedRoute: ActivatedRoute, private dailyLogService: DailyLogService) { }
   ngOnInit(): void {
@@ -37,6 +38,8 @@ export class DailyLogComponent implements OnInit {
           if (error.status === 404) {
             this.dailyLog = null;
             this.canStartDay = true;
+           
+            
           } else {
             console.error("Some error occured: ", error);
           }
@@ -45,7 +48,29 @@ export class DailyLogComponent implements OnInit {
       });
     }
 
+    this.passedDateIsToday = this.isToday(this.date!);
+
   }
+
+
+  isToday(inputDate: string): boolean {
+    // Parse the input string to a Date object
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // getMonth() returns 0-11
+    const day = today.getDate();
+
+    // Pad the month and day with a leading zero if they are less than 10
+    const formattedMonth = month < 10 ? `0${month}` : month;
+    const formattedDay = day < 10 ? `0${day}` : day;
+    const todayFormatted = `${year}-${formattedMonth}-${formattedDay}`
+    
+    console.log(inputDate);
+    console.log(todayFormatted);
+
+    return inputDate === todayFormatted;
+}
 
   onStartDayClick() {
     const id = this.userId ?? "";
