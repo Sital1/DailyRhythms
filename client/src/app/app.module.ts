@@ -14,12 +14,14 @@ import { TodoitemsComponent } from './todoitems/todoitems.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
-import { RouterModule, Routes } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TextInputComponent } from './components/text-input/text-input.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TokenInterceptorInterceptor } from './interceptor/token-interceptor.interceptor';
-
+import { TrackedTodoitemsComponent } from './tracked-todoitems/tracked-todoitems.component';
+import { TaskDeleteModal, UsertoditemTableComponent } from './components/usertoditem-table/usertoditem-table.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { AddtaskmodalComponent } from './components/modals/addtaskmodal/addtaskmodal.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +31,11 @@ import { TokenInterceptorInterceptor } from './interceptor/token-interceptor.int
     LoginComponent,
     RegisterComponent,
     NavBarComponent,
-    TextInputComponent
+    TextInputComponent,
+    TrackedTodoitemsComponent,
+    UsertoditemTableComponent,
+    TaskDeleteModal,
+    AddtaskmodalComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +46,8 @@ import { TokenInterceptorInterceptor } from './interceptor/token-interceptor.int
     RouterOutlet,
     HttpClientModule,
     ReactiveFormsModule,
-    BsDropdownModule
+    BsDropdownModule,
+    ModalModule.forRoot()
   ],
   providers: [{provide:HTTP_INTERCEPTORS, useClass:TokenInterceptorInterceptor,multi:true},],
   bootstrap: [AppComponent]

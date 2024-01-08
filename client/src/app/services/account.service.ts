@@ -18,6 +18,7 @@ export class AccountService {
 
   }
 
+
   loadCurrentUser(token: string | null) {
 
     if (token === null) {

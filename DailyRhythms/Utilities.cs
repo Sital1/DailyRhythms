@@ -10,5 +10,26 @@ namespace DailyRhythms
 			var userLocalTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, userTimeZone);
 			return userLocalTime;
 		}
+
+		public static DateTime AddTimeToUtc(DateTime utcTime, string timeZoneId)
+		{
+			// Find the time zone
+			TimeZoneInfo timeZoneInfo;
+			try
+			{
+				timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+			}
+			catch (TimeZoneNotFoundException)
+			{
+				throw new ArgumentException($"Invalid time zone ID: {timeZoneId}");
+			}
+
+			// Convert the UTC time to the local time in the specified time zone
+			DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, timeZoneInfo);
+
+
+
+			return localTime;
+		}
 	}
 }

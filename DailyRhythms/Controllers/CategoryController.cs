@@ -3,11 +3,11 @@ using DailyRhythms.Models.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+
 
 namespace DailyRhythms.Controllers
 {
-	[Route("api/[controller]/todoitem")]
+	[Route("api/[controller]/todoitems")]
 	[ApiController]
 	[Authorize]
 	public class CategoryController : ControllerBase
@@ -18,6 +18,70 @@ namespace DailyRhythms.Controllers
 		{
 			_context = context;
 		}
+
+		[HttpGet("{userId}")]
+		public async Task<ActionResult<UserCategoryDto>> AllUserToDoItems(int userId)
+		{
+			var user = await _context.Users.FindAsync(userId);
+
+			if (user == null)
+			{
+				return BadRequest("User does not exist in db");
+			}
+			var toDoItems = await _context.ToDoItems
+							.Where(t => t.UserId == userId
+							&& !t.DeletedAt.HasValue)
+
+
+							.Select(ti => new UserToDoItemDto
+							{
+								Id = ti.Id,
+								Title = ti.Title,
+								CreatedAt = Utilities.AddTimeToUtc(ti.CreatedAt, user.TimeZoneId),
+								CategoryId = (int)ti.CategoryId,
+								UserId = ti.UserId
+							}).ToListAsync();
+			var userToDoItems = new UserToDoItems
+			{
+				Id = userId,
+				Morning = new UserCategoryDto { UserToDoItems = toDoItems.Where(ti => ti.CategoryId == (int)CategoryType.Morning).ToList() },
+				Afternoon = new UserCategoryDto { UserToDoItems = toDoItems.Where(ti => ti.CategoryId == (int)CategoryType.Afternoon).ToList() },
+				Evening = new UserCategoryDto { UserToDoItems = toDoItems.Where(ti => ti.CategoryId == (int)CategoryType.Evening).ToList() },
+				Anytime = new UserCategoryDto { UserToDoItems = toDoItems.Where(ti => ti.CategoryId == (int)CategoryType.Anytime).ToList() }
+			};
+
+			return Ok(userToDoItems);
+
+		}
+
+		[HttpGet("{userId}/{categoryId}")]
+		public async Task<ActionResult<IEnumerable<UserToDoItemDto>>> UserToDoItemsByCategory(int userId, int categoryId)
+		{
+			var user = await _context.Users.FindAsync(userId);
+
+			if (user == null)
+			{
+				return BadRequest("User does not exist in db");
+			}
+			var toDoItems = await _context.ToDoItems
+							.Where(t => t.UserId == userId && (int)t.CategoryId == categoryId
+							&& !t.DeletedAt.HasValue)
+
+
+							.Select(ti => new UserToDoItemDto
+							{
+								Id = ti.Id,
+								Title = ti.Title,
+								CreatedAt = Utilities.AddTimeToUtc(ti.CreatedAt, user.TimeZoneId),
+								CategoryId = (int)ti.CategoryId,
+								UserId = ti.UserId
+							}).ToListAsync();
+		
+
+			return Ok(toDoItems);
+		}
+
+
 
 		[HttpPost]
 		public async Task<ActionResult> AddToDoItem(AddToDoItemToCategoryDto addToDoItemTo)
@@ -61,8 +125,8 @@ namespace DailyRhythms.Controllers
 				return NotFound("The Category does not exist");
 			}
 
-		
-			var toDoItem = await _context.ToDoItems.FirstOrDefaultAsync(x=> x.UserId == user.Id && x.CategoryId == categoryId && x.Id == toDoItemDto.Id);
+
+			var toDoItem = await _context.ToDoItems.FirstOrDefaultAsync(x => x.UserId == user.Id && x.CategoryId == categoryId && x.Id == toDoItemDto.Id);
 			if (toDoItem == null)
 			{
 				return NotFound("The ToDoItem does not exist");

@@ -1,0 +1,58 @@
+<div class="modal-header">
+  <h6 class="modal-title pull-left">{{ title }}</h6>
+  <button
+    type="button"
+    class="btn-close close pull-right"
+    aria-label="Close"
+    (click)="bsModalRef.hide()"
+  >
+    <span aria-hidden="true" class="visually-hidden">&times;</span>
+  </button>
+</div>
+
+
+<div class="d-flex justify-content-center mt-5">
+    <div class="col-lg-8 col-sm-8 col-md-8">
+      <form [formGroup]="addToDoItemForm" (ngSubmit)="onSubmit()">
+
+        <app-text-input [formControl]="addToDoItemForm.controls['title']" [label]="'Title'"></app-text-input>
+
+        <div class="form-floating">
+          <select 
+          [ngClass]="(addToDoItemForm.controls['category'].touched) ? addToDoItemForm.controls['category'].invalid ? 'is-invalid' : 'is-valid' : null"
+          class="form-select" id="floatingSelect" [formControl]="addToDoItemForm.controls['category']" aria-label="Time Zone">
+            <option  [value]="1">Morning</option>
+            <option  [value]="2">Afternoon</option>
+            <option  [value]="3">Evening</option>
+            <option  [value]="4">AnyTime</option>
+          </select>
+          <label for="floatingSelect">Category</label>
+          <div *ngIf="addToDoItemForm.controls['category'].errors?.['required']" class="invalid-feedback">Please select timezone</div>
+        </div>
+
+        <!-- <select [formControl]="registerForm.controls['timeZoneId']" class="form-control">
+
+        </select> -->
+        <ul class="text-danger list-unstyled" *ngIf="errors">
+          <li *ngFor="let error of errors">
+            {{error}}
+          </li>
+        </ul>
+        <div class="d-flex justify-content-center p-3">
+            <button [disabled]="addToDoItemForm.invalid" type="button" class="btn btn-success me-3" type="submit">
+              Add
+            </button>
+            <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">
+              {{ closeBtnName }}
+            </button>
+          </div>
+          
+      </form>
+    </div>
+  
+  </div>
+
+
+
+
+

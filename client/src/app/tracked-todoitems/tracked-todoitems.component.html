@@ -1,0 +1,42 @@
+<div class="container">
+  <div *ngIf="userToDoItems === null">
+    <p>There are no items in your basket</p>
+  </div>
+ <div >
+  <button (click)="openModalWithComponent()" class="btn btn-success mb-3"><i class="fa fa-solid fa-plus">Add Task</i></button>
+  
+  <tabset type="pills d-flex justify-content-start">
+    <tab heading="Morning">
+      <div>
+        <app-usertoditem-table
+          [userToDoItems]="userToDoItems?.morning?.userToDoItems"
+        ></app-usertoditem-table>
+      </div>
+    </tab>
+
+    <tab heading="Afternoon">
+      <div>
+        <app-usertoditem-table
+          [userToDoItems]="userToDoItems?.afternoon?.userToDoItems"
+        ></app-usertoditem-table>
+      </div>
+    </tab>
+    <tab heading="Evening">
+      <div>
+        <app-usertoditem-table
+          [userToDoItems]="userToDoItems?.evening?.userToDoItems"
+        ></app-usertoditem-table>
+      </div>
+    </tab>
+    <tab heading="AnyTime">
+      <div>
+        <app-usertoditem-table
+          [userToDoItems]="userToDoItems?.anytime?.userToDoItems"
+        ></app-usertoditem-table>
+      </div>
+    </tab>
+  </tabset>
+  <div>
+  </div>
+ </div>
+</div>
