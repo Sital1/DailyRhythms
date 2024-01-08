@@ -22,6 +22,10 @@ import { TrackedTodoitemsComponent } from './tracked-todoitems/tracked-todoitems
 import { TaskDeleteModal, UsertoditemTableComponent } from './components/usertoditem-table/usertoditem-table.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AddtaskmodalComponent } from './components/modals/addtaskmodal/addtaskmodal.component';
+import { ErrorInterceptor } from './interceptor/error.interceptor';
+import { ToastrModule } from 'ngx-toastr';
+import { TestErrorComponent } from './test-error/test-error.component';
+import { NotfoundComponent } from './notfound/notfound.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +39,9 @@ import { AddtaskmodalComponent } from './components/modals/addtaskmodal/addtaskm
     TrackedTodoitemsComponent,
     UsertoditemTableComponent,
     TaskDeleteModal,
-    AddtaskmodalComponent
+    AddtaskmodalComponent,
+    TestErrorComponent,
+    NotfoundComponent
   ],
   imports: [
     BrowserModule,
@@ -47,9 +53,16 @@ import { AddtaskmodalComponent } from './components/modals/addtaskmodal/addtaskm
     HttpClientModule,
     ReactiveFormsModule,
     BsDropdownModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    ToastrModule.forRoot({
+      positionClass:'toast-top-right',
+      preventDuplicates:true
+    })
   ],
-  providers: [{provide:HTTP_INTERCEPTORS, useClass:TokenInterceptorInterceptor,multi:true},],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

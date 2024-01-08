@@ -4,7 +4,7 @@
   <nav class="my-2 text-uppercase fs-6 ">
     <a class="p-2 " routerLink="/viewlogs" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">View Logs</a>
     <a class="p-2 " routerLink="/trackedToDoItems" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">ToDoItems</a>
-    
+    <a class="p-2" routerLink="/test-error" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">ERRORS</a>
   </nav>
   <div class="d-flex align-items-center ">
     <ng-container *ngIf="(accountService.currentUser$|async)===null">
@@ -19,18 +19,18 @@
        </a>
        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right">
          <li class="py-1">
-           <a routerLink="/viewlogs" class="dropdown-item">
+           <a routerLink="/viewlogs" class="dropdown-item text-black">
              <i class="fa fa-calendar me-3"></i> View Logs
            </a>
          </li>
          <li class="py-1">
-           <a routerLink="/orders" class="dropdown-item">
+           <a routerLink="/orders" class="dropdown-item text-black">
              <i class="fa fa-solid fa-check me-3"></i> View ToDoItems
            </a>
          </li>
          <div class="dropdows-divider"></div>
          <li class="py-1">
-           <a (click)="accountService.logout()" class="dropdown-item">
+           <a (click)="accountService.logout()" class="dropdown-item text-black">
              <i class="fa fa-sign-out me-3"></i> Logout
            </a>
          </li>
