@@ -32,11 +32,6 @@ jobs:
           npm install
           npm run build
 
-      # Copy Angular build to .NET Core wwwroot
-      - name: Copy Angular build to .NET Core wwwroot
-        run: |
-          cp -r client/dist/client/* DailyRhythms/wwwroot/
-
       # Build .NET Core app
       - name: Build .NET Core
         run: |
