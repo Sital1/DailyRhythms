@@ -36,8 +36,11 @@ jobs:
      
       - name: Publish .NET Core
         run: |
+          ls
+          cd ..
           cd DailyRhythms/DailyRhythms  
           dotnet publish -c Release -o out
+          ls
 
       # Deploy to DigitalOcean
       - name: Deploy to DigitalOcean
