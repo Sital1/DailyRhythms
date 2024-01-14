@@ -40,13 +40,14 @@ jobs:
 
       # Deploy to DigitalOcean
       - name: Deploy to DigitalOcean
-        uses: appleboy/scp-action@master
+        uses: pressidium/lftp-mirror-action@v1
         with:
           host: ${{ secrets.DO_DROPLET_IP }}
-          username: ${{ secrets.DO_DROPLET_USER }}
-          password: ${{ secrets.DO_DROPLET_PASSWORD }}
-          source: "DailyRhythms/out/*"
-          target: "/var/DailyRhythms"
+          user: ${{ secrets.DO_DROPLET_USER }}
+          pass: ${{ secrets.DO_DROPLET_PASSWORD }}
+          port: 22,
+          localDir: "DailyRhythms/out/*"
+          remoteDir: "/var/DailyRhythms"
 
       # Restart .NET Core app
       - name: Restart .NET Core app
@@ -55,6 +56,7 @@ jobs:
           host: ${{ secrets.DO_DROPLET_IP }}
           username: ${{ secrets.DO_DROPLET_USER }}
           password: ${{ secrets.DO_DROPLET_PASSWORD }}
+          port: 22
           script: |
             cd /var/DailyRhythms
             systemctl restart systemd-journald
