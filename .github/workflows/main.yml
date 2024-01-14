@@ -46,7 +46,7 @@ jobs:
           user: ${{ secrets.DO_DROPLET_USER }}
           pass: ${{ secrets.DO_DROPLET_PASSWORD }}
           port: 22,
-          localDir: "DailyRhythms/out/*"
+          localDir: "DailyRhythms/DailyRhythms/out/*"
           remoteDir: "/var/DailyRhythms"
 
       # Restart .NET Core app
