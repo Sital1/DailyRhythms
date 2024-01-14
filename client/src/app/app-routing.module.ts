@@ -10,11 +10,11 @@ import { TestErrorComponent } from './test-error/test-error.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 
 const routes: Routes = [
-  { path: 'DailyLog/:date/:userId',canActivate:[authGuard], component: DailyLogComponent },
+  { path: 'DailyLog/:date/:userId', canActivate: [authGuard], component: DailyLogComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'viewlogs', component: DatePickerComponent },
-  { path: 'trackedToDoItems', canActivate:[authGuard], component: TrackedTodoitemsComponent },
+  { path: 'viewlogs', canActivate: [authGuard], component: DatePickerComponent },
+  { path: 'trackedToDoItems', canActivate: [authGuard], component: TrackedTodoitemsComponent },
   { path: 'test-error', component: TestErrorComponent },
   { path: 'not-found', component: NotfoundComponent },
 

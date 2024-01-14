@@ -1,35 +1,37 @@
-<div style="margin-left: 150px;">
-  <h3>{{ date }}</h3>
+<div>
+  <h4>{{ date }}</h4>
 <div *ngIf="canStartDay" class="d-flex justify-content-center me-3">
   <!-- Add disabled logic later-->
   <button style="cursor: pointer;" class="btn btn-primary" [disabled]="!passedDateIsToday" (click)="onStartDayClick()">Start Day</button>
 </div>
 
-<div *ngIf="dailyLog" class="container mt-5" >
+<div *ngIf="dailyLog" class="container" >
 
-  <tabset type="pills d-flex justify-content-start">
-    <tab heading="Morning">
-      <div *ngFor="let item of dailyLog.morning.toDoItems">
-        <app-todoitems [passedDateIsToday]="passedDateIsToday"  [dailyLogId]="dailyLog.id" [item]="item"></app-todoitems>
-      </div>
-    </tab>
-
-    <tab heading="Afternoon">
-      <div *ngFor="let item of dailyLog.afternoon.toDoItems">
-        <app-todoitems [passedDateIsToday]="passedDateIsToday" [dailyLogId]="dailyLog.id" [item]="item"></app-todoitems>
-      </div>
-    </tab>
-    <tab heading="Evening">
-      <div *ngFor="let item of dailyLog.evening.toDoItems">
-        <app-todoitems [passedDateIsToday]="passedDateIsToday" [dailyLogId]="dailyLog.id" [item]="item"></app-todoitems>
-      </div>
-    </tab>
-    <tab heading="AnyTime">
-      <div *ngFor="let item of dailyLog.anytime.toDoItems">
-        <app-todoitems [passedDateIsToday]="passedDateIsToday" [dailyLogId]="dailyLog.id" [item]="item"></app-todoitems>
-      </div>
-    </tab>
-  </tabset>
+  <div class="row sm-12">
+    <tabset type="pills d-flex justify-content-start">
+      <tab heading="Morning">
+        <div *ngFor="let item of dailyLog.morning.toDoItems">
+          <app-todoitems [passedDateIsToday]="passedDateIsToday"  [dailyLogId]="dailyLog.id" [item]="item"></app-todoitems>
+        </div>
+      </tab>
+  
+      <tab heading="Afternoon">
+        <div *ngFor="let item of dailyLog.afternoon.toDoItems">
+          <app-todoitems [passedDateIsToday]="passedDateIsToday" [dailyLogId]="dailyLog.id" [item]="item"></app-todoitems>
+        </div>
+      </tab>
+      <tab heading="Evening">
+        <div *ngFor="let item of dailyLog.evening.toDoItems">
+          <app-todoitems [passedDateIsToday]="passedDateIsToday" [dailyLogId]="dailyLog.id" [item]="item"></app-todoitems>
+        </div>
+      </tab>
+      <tab heading="AnyTime">
+        <div *ngFor="let item of dailyLog.anytime.toDoItems">
+          <app-todoitems [passedDateIsToday]="passedDateIsToday" [dailyLogId]="dailyLog.id" [item]="item"></app-todoitems>
+        </div>
+      </tab>
+    </tabset>
+  </div>
 </div>
 
 </div>

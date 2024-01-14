@@ -23,7 +23,7 @@ namespace DailyRhythms
 
 			builder.Services.AddDbContext<DailyRhythmsContext>(options =>
 			{
-				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+				options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 			});
 			builder.Services.AddScoped<IAuthService, AuthService>();
 
@@ -34,7 +34,7 @@ namespace DailyRhythms
 			{
 				opt.AddPolicy("CorsPolicy", policy =>
 				{
-					policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+					policy.AllowAnyHeader().AllowAnyMethod().WithOrigins(new string[] {"https://localhost:4200"});
 				});
 			});
 
@@ -99,6 +99,8 @@ namespace DailyRhythms
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
+			app.UseStaticFiles();
+			app.MapFallbackToController("Index","FallBack");
 
 			app.UseCors("CorsPolicy");
 

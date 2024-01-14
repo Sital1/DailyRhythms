@@ -10,5 +10,10 @@ export class NavBarComponent {
 
   constructor(public accountService:AccountService) { 
   }
+  navbarOpen = false;
+
+  toggleNavbar() {
+    this.navbarOpen = !this.navbarOpen;
+  }
 
 }
