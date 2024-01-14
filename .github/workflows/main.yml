@@ -27,7 +27,7 @@ jobs:
             mkdir dailyrhythmclone 
             cd  dailyrhythmclone
             ls
-            git clone git@github.com:Sital1/DailyRhythms.git
+            git clone https://github.com/Sital1/DailyRhythms.git
             echo 'Deployment successful to digital ocean' 
             
             
