@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DailyRhythms.Migrations
 {
     /// <inheritdoc />
-    public partial class inital : Migration
+    public partial class Postgresinitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,10 +18,10 @@ namespace DailyRhythms.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,13 +32,14 @@ namespace DailyRhythms.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TimeZoneId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DisplayName = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    TimeZoneId = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,12 +50,12 @@ namespace DailyRhythms.Migrations
                 name: "DailyLogs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,14 +72,14 @@ namespace DailyRhythms.Migrations
                 name: "ToDoItems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "text", nullable: true),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CategoryId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,9 +102,9 @@ namespace DailyRhythms.Migrations
                 name: "DailyLogToDoItems",
                 columns: table => new
                 {
-                    DailyLogId = table.Column<int>(type: "int", nullable: false),
-                    ToDoItemId = table.Column<int>(type: "int", nullable: false),
-                    Completed = table.Column<bool>(type: "bit", nullable: false)
+                    DailyLogId = table.Column<int>(type: "integer", nullable: false),
+                    ToDoItemId = table.Column<int>(type: "integer", nullable: false),
+                    Completed = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,10 +128,10 @@ namespace DailyRhythms.Migrations
                 columns: new[] { "Id", "CreatedAt", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1263), "Morning", new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1266) },
-                    { 2, new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1269), "Afternoon", new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1270) },
-                    { 3, new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1271), "Evening", new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1271) },
-                    { 4, new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1272), "Anytime", new DateTime(2023, 12, 31, 6, 27, 56, 243, DateTimeKind.Utc).AddTicks(1272) }
+                    { 1, new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3455), "Morning", new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3457) },
+                    { 2, new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3458), "Afternoon", new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3459) },
+                    { 3, new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3459), "Evening", new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3460) },
+                    { 4, new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3460), "Anytime", new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3461) }
                 });
 
             migrationBuilder.CreateIndex(

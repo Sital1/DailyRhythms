@@ -131,7 +131,7 @@ namespace DailyRhythms.Controllers
 			{
 				return NotFound("The ToDoItem does not exist");
 			}
-			toDoItem.DeletedAt = Utilities.ConvertUtcToLocalTime(user.TimeZoneId);
+			toDoItem.DeletedAt = DateOnly.FromDateTime(Utilities.ConvertUtcToLocalTime(user.TimeZoneId));
 			_context.Entry(toDoItem).State = EntityState.Modified;
 
 			try

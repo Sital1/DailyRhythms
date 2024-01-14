@@ -17,7 +17,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   matcheDailyLogUrl(url: string): boolean {
 
-    const pattern = /^[a-zA-Z]+:\/\/[^\/]+\/api\/DailyLogs\/\d+\/\d{4}-\d{2}-\d{2}$/;
+    const pattern = /api\/DailyLogs\/\d+\/\d{4}-\d{2}-\d{2}/;
     return pattern.test(url);
 
   }

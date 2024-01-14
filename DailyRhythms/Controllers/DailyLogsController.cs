@@ -79,7 +79,7 @@ namespace DailyRhythms.Controllers
 			// Fetch all the active ToDoItems for the user
 			var activeToDoItems = await _context.ToDoItems
 											.Where(ti => ti.UserId == userId &&
-														 (!ti.DeletedAt.HasValue || ti.DeletedAt.Value > userDate))
+														 (!ti.DeletedAt.HasValue || ti.DeletedAt.Value > dateOnly))
 											.ToListAsync();
 			foreach (var item in activeToDoItems)
 			{

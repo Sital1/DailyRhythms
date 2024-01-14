@@ -4,7 +4,7 @@
 	{
 		// Inherits 'Id', 'CreatedAt', and 'UpdatedAt' from BaseEntity
 		public string Title { get; set; }
-		public DateTime? DeletedAt { get; set; } = null;
+		public DateOnly? DeletedAt { get; set; } = null;
 
 		// Foreign keys and Navigation properties
 		public CategoryType CategoryId { get; set; }

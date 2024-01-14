@@ -3,17 +3,17 @@ using System;
 using DailyRhythms.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace DailyRhythms.Migrations
 {
     [DbContext(typeof(DailyRhythmsContext))]
-    [Migration("20240106062048_Auth")]
-    partial class Auth
+    [Migration("20240114015242_Postgres initial")]
+    partial class Postgresinitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,23 +21,23 @@ namespace DailyRhythms.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("DailyRhythms.Models.Category", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -47,30 +47,30 @@ namespace DailyRhythms.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 1, 6, 6, 20, 47, 793, DateTimeKind.Utc).AddTicks(5944),
+                            CreatedAt = new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3455),
                             Name = "Morning",
-                            UpdatedAt = new DateTime(2024, 1, 6, 6, 20, 47, 793, DateTimeKind.Utc).AddTicks(5947)
+                            UpdatedAt = new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3457)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 1, 6, 6, 20, 47, 793, DateTimeKind.Utc).AddTicks(5951),
+                            CreatedAt = new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3458),
                             Name = "Afternoon",
-                            UpdatedAt = new DateTime(2024, 1, 6, 6, 20, 47, 793, DateTimeKind.Utc).AddTicks(5952)
+                            UpdatedAt = new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3459)
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 1, 6, 6, 20, 47, 793, DateTimeKind.Utc).AddTicks(5953),
+                            CreatedAt = new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3459),
                             Name = "Evening",
-                            UpdatedAt = new DateTime(2024, 1, 6, 6, 20, 47, 793, DateTimeKind.Utc).AddTicks(5953)
+                            UpdatedAt = new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3460)
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 1, 6, 6, 20, 47, 793, DateTimeKind.Utc).AddTicks(5954),
+                            CreatedAt = new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3460),
                             Name = "Anytime",
-                            UpdatedAt = new DateTime(2024, 1, 6, 6, 20, 47, 793, DateTimeKind.Utc).AddTicks(5955)
+                            UpdatedAt = new DateTime(2024, 1, 14, 1, 52, 41, 862, DateTimeKind.Utc).AddTicks(3461)
                         });
                 });
 
@@ -78,21 +78,21 @@ namespace DailyRhythms.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateOnly>("Date")
                         .HasColumnType("date");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -104,13 +104,13 @@ namespace DailyRhythms.Migrations
             modelBuilder.Entity("DailyRhythms.Models.DailyLogToDoItem", b =>
                 {
                     b.Property<int>("DailyLogId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("ToDoItemId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("Completed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.HasKey("DailyLogId", "ToDoItemId");
 
@@ -123,27 +123,27 @@ namespace DailyRhythms.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CategoryId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -158,31 +158,31 @@ namespace DailyRhythms.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DisplayName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TimeZoneId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
