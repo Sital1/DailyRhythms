@@ -30,7 +30,7 @@ jobs:
         run: |
           cd client  
           npm install
-          npm run build -- --prod
+          npm run build
 
       # Copy Angular build to .NET Core wwwroot
       - name: Copy Angular build to .NET Core wwwroot
