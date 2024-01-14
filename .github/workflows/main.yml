@@ -14,43 +14,9 @@ jobs:
         uses: actions/checkout@v2
 
       # Setup .NET Core
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '8.0'  
-
-      # Install Node.js for Angular build
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '18' 
-
-      # Build Angular app
-      - name: Build Angular
-        run: |
-          cd client  
-          npm install
-          npm run build
-
-      # Build .NET Core app
-      - name: Build .NET Core
-        run: |
-          cd DailyRhythms  
-          dotnet publish -c Release -o out
-
-      # Deploy to DigitalOcean
-      - name: Deploy to DigitalOcean
-        uses: pressidium/lftp-mirror-action@v1
-        with:
-          host: ${{ secrets.DO_DROPLET_IP }}
-          user: ${{ secrets.DO_DROPLET_USER }}
-          pass: ${{ secrets.DO_DROPLET_PASSWORD }}
-          port: 22,
-          localDir: "/home/runner/work/DailyRhythms/DailyRhythms/DailyRhythms/out/*"
-          remoteDir: "/var/DailyRhythms"
-
+      
       # Restart .NET Core app
-      - name: Restart .NET Core app
+      - name: Clone Project
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DO_DROPLET_IP }}
@@ -58,8 +24,10 @@ jobs:
           password: ${{ secrets.DO_DROPLET_PASSWORD }}
           port: 22
           script: |
-            cd /var/DailyRhythms
-            systemctl restart systemd-journald
-            sudo systemctl start DailyRhythms-web.service
+            mkdir dailyrhythmclone 
+            cd  dailyrhythmclone
+            ls
+            git clone git@github.com:Sital1/DailyRhythms.git
+            echo 'Deployment successful to digital ocean' 
             
             
