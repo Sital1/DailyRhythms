@@ -10,24 +10,51 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Setup .NET Core
-      
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0'  
+
+   
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' 
+
+  
+      - name: Build Angular
+        run: |
+          cd client  
+          npm install
+          npm run build  
+
+     
+      - name: Publish .NET Core
+        run: |
+          cd DailyRhythms/DailyRhythms  
+          dotnet publish -c Release -o out
+
+      # Deploy to DigitalOcean
+      - name: Deploy to DigitalOcean
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.DO_DROPLET_IP }}
+          username: ${{ secrets.DO_DROPLET_USER }}
+          password: ${{ secrets.DO_DROPLET_PASSWORD }}
+          source: "DailyRhythms/DailyRhythms/out/*"
+          target: "var/DailyRhythms"
+
       # Restart .NET Core app
-      - name: Clone Project
+      - name: Restart .NET Core app
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DO_DROPLET_IP }}
           username: ${{ secrets.DO_DROPLET_USER }}
           password: ${{ secrets.DO_DROPLET_PASSWORD }}
-          port: 22
           script: |
-            mkdir dailyrhythmclone 
-            cd  dailyrhythmclone
-            git clone git@github.com:Sital1/DailyRhythms.git
-            ls
-            echo 'Deployment successful to digital ocean' 
-            
-            
+            sudo systemctl restart DailyRhythms-web.service
