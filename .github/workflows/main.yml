@@ -49,8 +49,8 @@ jobs:
           host: ${{ secrets.DO_DROPLET_IP }}
           username: ${{ secrets.DO_DROPLET_USER }}
           password: ${{ secrets.DO_DROPLET_PASSWORD }}
-          source: "DailyRhythms/DailyRhythms/out/*"
-          target: "var/DailyRhythms"
+          source: "/home/runner/work/DailyRhythms/DailyRhythms/DailyRhythms/out/*"
+          target: "/var/DailyRhythms"
 
       # Restart .NET Core app
       - name: Restart .NET Core app
