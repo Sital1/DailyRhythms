@@ -8,6 +8,7 @@ import { authGuard } from './guards/auth.guard';
 import { TrackedTodoitemsComponent } from './tracked-todoitems/tracked-todoitems.component';
 import { TestErrorComponent } from './test-error/test-error.component';
 import { NotfoundComponent } from './notfound/notfound.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   { path: 'DailyLog/:date/:userId', canActivate: [authGuard], component: DailyLogComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'trackedToDoItems', canActivate: [authGuard], component: TrackedTodoitemsComponent },
   { path: 'test-error', component: TestErrorComponent },
   { path: 'not-found', component: NotfoundComponent },
+  { path: '', component: HomeComponent },
 
 ];
 
