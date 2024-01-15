@@ -14,7 +14,7 @@ namespace DailyRhythms.Models.Dtos
 		[Required]
 		public string TimeZoneId { get; set; }  // IANA time zone identifier
 		[Required]
-		[RegularExpression("(?=^.{6,10}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\\s).*$",
+		[RegularExpression("(?=^.{7,}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\\s).*$",
 		ErrorMessage = "Password must have 1 Uppercase, 1 Lowercase, 1 number, 1 non alphanumeric and at least 6 characters")]
 		public string Password { get; set; }
 
