@@ -3,9 +3,32 @@
   }
 
 
+.date-display {
+   position: fixed; 
+   top: 105px;       
+   right: 10px;     
+   z-index: 1000;   
+ 
+   padding: 8px;
+   background-color: #f8f9fa; 
+   border: 1px solid #ddd;    
+   border-radius: 4px;        
+   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+ 
+   font-size: 0.9em;
+   color: #333; 
+ }
+ 
+
+
 @media (max-width: 768px) {
    .content{
     margin-top: 196px;
    }
+   .date-display {
+      right: 5px; // Closer to the edge on smaller screens
+      font-size: 0.5em; // Slightly smaller font on mobile
+      top: 185px;
+    }
 }
 

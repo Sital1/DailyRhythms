@@ -26,6 +26,7 @@ import { ErrorInterceptor } from './interceptor/error.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { TestErrorComponent } from './test-error/test-error.component';
 import { NotfoundComponent } from './notfound/notfound.component';
+import { HomeComponent } from './home/home.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +42,8 @@ import { NotfoundComponent } from './notfound/notfound.component';
     TaskDeleteModal,
     AddtaskmodalComponent,
     TestErrorComponent,
-    NotfoundComponent
+    NotfoundComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

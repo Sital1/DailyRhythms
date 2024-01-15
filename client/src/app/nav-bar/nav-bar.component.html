@@ -1,7 +1,8 @@
 <header
   class="d-flex  align-items-center justify-content-between p-3 px-4 mb-3 navbar  bg-dark text-white border-bottom fixed-top shadow-sm">
-  <h3>Daily Rhythms</h3>
+  <a routerLink=""><h3>Daily Rhythms</h3></a>
   <nav class="my-2 text-uppercase d-flex">
+    <a class="p-2 " routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a>
     <a class="p-2 " routerLink="/viewlogs" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">View Logs</a>
     <a class="p-2 " routerLink="/trackedToDoItems" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">ToDoItems</a>
   </nav>

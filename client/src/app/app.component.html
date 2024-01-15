@@ -2,5 +2,8 @@
 <app-nav-bar></app-nav-bar>
 
 <div class="content" >
+  <div class="date-display">
+    {{ currentDate | date: 'fullDate' }}
+  </div>
   <router-outlet></router-outlet>
 </div>
