@@ -9,6 +9,7 @@ import { AccountService } from './services/account.service';
 })
 export class AppComponent implements OnInit {
   title = 'client';
+  currentDate = new Date();
   constructor(public accountService: AccountService) {
   }
 

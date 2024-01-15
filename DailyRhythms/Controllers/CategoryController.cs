@@ -76,7 +76,7 @@ namespace DailyRhythms.Controllers
 								CategoryId = (int)ti.CategoryId,
 								UserId = ti.UserId
 							}).ToListAsync();
-		
+
 
 			return Ok(toDoItems);
 		}
@@ -105,7 +105,22 @@ namespace DailyRhythms.Controllers
 				UserId = addToDoItemTo.UserId
 			};
 
+			var userDate = Utilities.ConvertUtcToLocalTime(user.TimeZoneId).Date;
+			var dateOnly = DateOnly.FromDateTime(userDate);
 			_context.ToDoItems.Add(toDoItem);
+
+			var dailyLog = await _context.DailyLogs
+				.FirstOrDefaultAsync(dl => dl.UserId == addToDoItemTo.UserId && dl.Date == dateOnly);
+			if (dailyLog != null)
+			{
+				var dailyLogToDoItem = new DailyLogToDoItem
+				{
+					DailyLog = dailyLog,
+					ToDoItem = toDoItem,
+					Completed = false
+				};
+				_context.DailyLogToDoItems.Add(dailyLogToDoItem);
+			}
 			await _context.SaveChangesAsync();
 			return Ok();
 		}
