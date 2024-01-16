@@ -14,7 +14,7 @@ export class RegisterComponent {
   timezones = timezoneArray
   errors: string[] | null = null;
   constructor(private fb: FormBuilder, private accountService: AccountService, private router: Router) { }
-  complexPassword = "(?=^.{7,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$"
+  complexPassword = "^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){8,16}$"
   registerForm = this.fb.group({
     displayName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email], [this.validateEmailNotTaken()]],
